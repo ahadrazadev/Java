@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +10,15 @@ public class Main extends JFrame {
     private JTextField[] priorityField;
     private JButton executeFCFSButton;
     private JButton executePriorityButton;
+    private JTable fcfsTable;
+    private JTable priorityTable;
 
     public Main() {
         setTitle("CPU Scheduling Simulator");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
 
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         int n = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of processes:"));
@@ -44,10 +48,40 @@ public class Main extends JFrame {
         buttonPanel.add(executeFCFSButton);
         buttonPanel.add(executePriorityButton);
 
-        setLayout(new BorderLayout());
-        add(inputPanel, BorderLayout.NORTH);  // Change to NORTH
-        add(buttonPanel, BorderLayout.CENTER);  // Change to CENTER
+        // Create tables and their models
+        DefaultTableModel fcfsTableModel = new DefaultTableModel();
+        fcfsTableModel.addColumn("PID");
+        fcfsTableModel.addColumn("Arrival");
+        fcfsTableModel.addColumn("Burst");
+        fcfsTableModel.addColumn("Complete");
+        fcfsTableModel.addColumn("Turnaround");
+        fcfsTableModel.addColumn("Waiting");
 
+        DefaultTableModel priorityTableModel = new DefaultTableModel();
+        priorityTableModel.addColumn("PID");
+        priorityTableModel.addColumn("Arrival");
+        priorityTableModel.addColumn("Burst");
+        priorityTableModel.addColumn("Priority");
+        priorityTableModel.addColumn("Complete");
+        priorityTableModel.addColumn("Turnaround");
+        priorityTableModel.addColumn("Waiting");
+
+        fcfsTable = new JTable(fcfsTableModel);
+        priorityTable = new JTable(priorityTableModel);
+
+        JScrollPane fcfsScrollPane = new JScrollPane(fcfsTable);
+        JScrollPane priorityScrollPane = new JScrollPane(priorityTable);
+
+        JPanel tablesPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        tablesPanel.add(fcfsScrollPane);
+        tablesPanel.add(priorityScrollPane);
+
+        setLayout(new BorderLayout(10, 10));
+        add(inputPanel, BorderLayout.NORTH);
+        add(tablesPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        pack();  // Adjust frame size to fit components
         setVisible(true);
     }
 
@@ -113,7 +147,14 @@ public class Main extends JFrame {
             avgwt += wt[i];
             avgta += ta[i];
         }
+        DefaultTableModel fcfsTableModel = (DefaultTableModel) fcfsTable.getModel();
+        fcfsTableModel.setRowCount(0); // Clear existing rows
 
+        for (int i = 0; i < n; i++) {
+            fcfsTableModel.addRow(new Object[]{
+                    pid[i], ar[i], bt[i], ct[i], ta[i], wt[i]
+            });
+        }
         // Display the result
         StringBuilder result = new StringBuilder("\n");
         result.append("+-----+---------+-------+----------+------------+---------+---------\n");
@@ -190,6 +231,15 @@ public class Main extends JFrame {
             avgta += ta[i];
         }
 
+        DefaultTableModel priorityTableModel = (DefaultTableModel) priorityTable.getModel();
+        priorityTableModel.setRowCount(0); // Clear existing rows
+
+        for (int i = 0; i < n; i++) {
+            priorityTableModel.addRow(new Object[]{
+                    pid[i], ar[i], bt[i], priority[i], ct[i], ta[i], wt[i]
+            });
+        }
+
         // Display the result
         StringBuilder result = new StringBuilder("\n");
         result.append("+-----+---------+-------+----------+------------+---------+---------\n");
@@ -209,11 +259,6 @@ public class Main extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main();
-            }
-        });
+        SwingUtilities.invokeLater(() -> new Main());
     }
 }
