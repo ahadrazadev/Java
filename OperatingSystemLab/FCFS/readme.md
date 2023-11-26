@@ -37,3 +37,11 @@ This project is designed as a visual aid for students studying operating systems
 This project is designed for educational purposes, providing a simplified demonstration of a scheduling algorithm. It can serve as a valuable resource for students learning about operating systems and process scheduling.
 
 ---
+## Image
+![4](https://github.com/ahadrazadev/Java/assets/147371347/cdd2479b-4ecb-4345-9793-b15a3987e144)
+![1](https://github.com/ahadrazadev/Java/assets/147371347/7f6f8b21-9679-4fc5-9b61-afdb640fb58b)
+![2](https://github.com/ahadrazadev/Java/assets/147371347/b8717e7e-4cbd-43a3-b6b8-7b559d2a763f)
+![3](https://github.com/ahadrazadev/Java/assets/147371347/f63e1e3f-c5e2-426e-9ead-c187c2dd701c)
+---
+
+
