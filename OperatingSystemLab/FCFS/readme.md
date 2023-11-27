@@ -1,4 +1,4 @@
-# First-Come, First-Served (FCFS) Scheduler GUI
+# First-Come, First-Served and Priority (FCFS and Priority) Scheduler GUI
 
 ## Overview
 
